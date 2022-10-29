@@ -1,31 +1,47 @@
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 
-public class ProjectsCollection {
-	private static ProjectsCollection instance = null;
-	private ArrayList<Project> projects = new ArrayList<Project>();
-	
-	
-	private ProjectsCollection() {
-	
-	}
-	
-	public static ProjectsCollection getInstance() {
-		if(instance == null) 
-			instance = new ProjectsCollection();
-			
-		return instance;
-	}
-	
-	public void add(Project project) {
-		projects.add(project);
-		
-	}
+public class ProjectsCollection implements BasicCollection<Project> {
 
-	public ArrayList<Project> getProjects() {
-		return projects;
-	}
-	
+    private static ProjectsCollection instance = new ProjectsCollection();
+    private ArrayList<Project> projects = new ArrayList<Project>();
+
+    private ProjectsCollection(){
+
+    }
+
+
+    public void add(Project project){
+        projects.add(project);
+    }
+
+    @Override
+    public int size() {
+        return projects.size();
+    }
+
+    @Override
+    public boolean isEmpty() {
+        return projects.isEmpty();
+    }
+
+    @Override
+    public Project get(int i) {
+        return projects.get(i);
+    }
+
+    public Project[] getAll(){
+       Project[] arr = new Project[projects.size()];
+
+       for (int i = 0; i < projects.size(); i++){
+           arr[i] = projects.get(i);
+       }
+
+       return arr;
+    }
+
+    public static ProjectsCollection getInstance(){
+        return instance;
+    }
+
 
 }

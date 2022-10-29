@@ -36,8 +36,8 @@ public class ProjectTableView {
 		IDcolumn.setPrefWidth(140);
 	
 		// Creating and setting column for stage number
-		TableColumn<Project, Integer> StageColumn = new TableColumn<>("stageNumber");
-		StageColumn.setCellValueFactory(new PropertyValueFactory<>("stageNumber"));
+		TableColumn<Project, Integer> StageColumn = new TableColumn<>("Stage Number");
+		StageColumn.setCellValueFactory(new PropertyValueFactory<>("stageNum"));
 		StageColumn.setPrefWidth(80);
 		
 		// Creating table view and add the columns
@@ -47,7 +47,7 @@ public class ProjectTableView {
 		tableView.setPrefHeight(600);
 	
 		// Adding all the projects to the table view
-		for (Project project : projectsCollection.getProjects())
+		for (Project project : projectsCollection.getAll())
 			tableView.getItems().add(project);
 		
 		return tableView;

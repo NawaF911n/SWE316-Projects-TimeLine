@@ -1,78 +1,51 @@
+
+import java.time.Duration;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.time.Period;
+import java.time.temporal.ChronoUnit;
+
 
 public class Project {
-	private String projectID;
-	private Integer stageNumber;
-	private LocalDate startDate;
-	private LocalDate endDate;
-	private LocalDateTime createdOn;
-	private LocalDateTime changeOn;
-	private int customerID;
-	private String currency;
-	private StagesCollection stages = new StagesCollection();
-	
-	public Project(
-			String projectID,
-			Integer stageNumber,
-			LocalDate startDate,
-			LocalDate endDate,
-			LocalDateTime createdOn,
-			LocalDateTime changeOn,
-			int customerID,
-			String currency){
-		
-		this.projectID = projectID;
-		this.stageNumber = stageNumber;
-		this.startDate = startDate;
-		this.endDate = endDate;
-		this.changeOn = createdOn;
-		this.changeOn = changeOn;
-		this.customerID = customerID;
-		this.currency = currency;
-				
-	}
+    private String projectID;
+    private int stageNum;
+    private int duration;
+    private StagesCollection stagesCollection = new StagesCollection();
 
-	public String getProjectID() {
-		return projectID;
-	}
+    public Project(String projectID,int stageNum) {
+        this.projectID = projectID;
+        this.stageNum = stageNum;
+    }
 
-	public Integer getStageNumber() {
-		return stageNumber;
-	}
+    public String getProjectID(){
+        return projectID;
+    }
 
-	public LocalDate getStartDate() {
-		return startDate;
-	}
+    public int getDuration(){
+        if (stagesCollection.isEmpty())
+            duration = 0;
 
-	public LocalDate getEndDate() {
-		return endDate;
-	}
+        LocalDate firstStage = stagesCollection.get(0).getDate();
+        LocalDate lastStage = stagesCollection.get(stagesCollection.size() - 1).getDate();
+        long diff = Duration.between(firstStage.atStartOfDay(),lastStage.atStartOfDay()).toDays();
+        
+        duration = diff == 0? 1 : (int)diff;
+        return duration;
+    }
+    public int getStageNum(){
+        return stageNum;
+    }
 
-	public LocalDateTime getCreatedOn() {
-		return createdOn;
-	}
+    public StagesCollection getStagesCollection() {
+        return stagesCollection;
+    }
+    
+    public int getDurationMoanth() {
+    	StageData first = stagesCollection.get(0);
+    	StageData last = stagesCollection.get(stagesCollection.size()-1);
 
-	public LocalDateTime getChangeOn() {
-		return changeOn;
-	}
+        return (last.getDate().getMonthValue() + (12 * (last.getDate().getYear()
+        		- first.getDate().getYear()))) - first.getDate().getMonthValue() + 1;
 
-	public int getCustomerID() {
-		return customerID;
-	}
 
-	public String getCurrency() {
-		return currency;
-	}
-
-	public StagesCollection getStageCollection() {
-		return stages;
-	}
-	public int getDuration() {
-		return 78;
-	}
-
-	
-	
-
+    }
 }

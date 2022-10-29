@@ -44,7 +44,7 @@ public class TimeLine {
 		
 		
 		// To get the month from The first stage in the project
-		Stagee stage = selectedProject.getStageCollection().getStages().get(0);
+		StageData stage = selectedProject.getStagesCollection().get(0);
 		LocalDate dateStage = stage.getDate();
 		
 		// Set the the date that is first of the month to display it in the time line
@@ -53,8 +53,9 @@ public class TimeLine {
 		LocalDate currentDate = LocalDate.of(yearValue, monthValue + 1, 1);
 		
 		// Number of months that will be displayed 
-		int timeLineMonths = 5; // IF you want to increase the number of month, type the number of months + 1
-		
+		int timeLineMonths = selectedProject.getDurationMoanth() + 1;
+		System.out.println(timeLineMonths);
+
 		// Space between each month in the time line
 		double spaceBtwMonths = 1000/(timeLineMonths-1);
 
@@ -114,30 +115,29 @@ public class TimeLine {
 	}
 
 	private void drawFlags(Group root) {
-		StagesCollection stages = selectedProject.getStageCollection();
+		StagesCollection stages = selectedProject.getStagesCollection();
 
 		// Imaginary date, so I can compare it with the stage date 
 		LocalDate preDate = LocalDate.of(4000, 1, 1);
 		LocalDate currentDate;
 		
 		// To draw the flag for each stage
-		for(int i = 0; i < stages.getStages().size();++i) {
+		for(int i = 0; i < stages.size();++i) {
 			
 			// Getting some info from the stage
-			Stagee stage = stages.getStages().get(i);
+			StageData stage = stages.get(i);
 			currentDate = stage.getDate();
 			int newValue = stage.getNewValue();
-			int oldValue = stage.getOldValue();
 			
 			// Getting X position of the flag from the dic time line 
 			double positionX = (double) dictDays.get(currentDate.toString());
 			
 			// Creating the flag and draw them
-			Rectangle flagpole = new Rectangle(positionX,285 - 17 * newValue,1, 15 + 16 * newValue);
-			Rectangle box =  new Rectangle(positionX,285 - 17 * newValue,10 + newValue * 2 ,10);
+			Rectangle flagpole = new Rectangle(positionX,285 - 15 * newValue,1, 15 + 15 * newValue);
+			Rectangle box =  new Rectangle(positionX,285 - 15 * newValue,10 + newValue * 2 ,10);
 			Text flagValue = new Text(newValue+"");
 			flagValue.setX(positionX + 18);
-			flagValue.setY(285 - 17 * newValue);
+			flagValue.setY(285 - 15 * newValue);
 			
 			Text textDate = new Text(currentDate.toString());
 			textDate.setStyle("-fx-font: 9 arial;");
@@ -146,7 +146,7 @@ public class TimeLine {
 			
 			
 			// Setting the color of the flag based on the new value and old value
-			if(newValue >= oldValue) {
+			if(stage.getStatus()) {
 				box.setFill(javafx.scene.paint.Color.GREEN);
 				flagValue.setFill(Color.GREEN);
 				textDate.setFill(Color.GREEN);}
@@ -184,12 +184,12 @@ public class TimeLine {
 	
 	private void drawDuration(Group root) {
 		
-		StagesCollection stages = selectedProject.getStageCollection();
+		StagesCollection stages = selectedProject.getStagesCollection();
 		int duration = selectedProject.getDuration(); //  replace it with stages.getDuration
 		
 		// Getting the X positions of the first and last date stage from dic that store the day with its position in the time line
-		double startPositionx = (double) dictDays.get(stages.getStages().get(0).getDate().toString());
-		double endPositionx = (double) dictDays.get(stages.getStages().get(stages.getStages().size()-1).getDate().toString());
+		double startPositionx = (double) dictDays.get(stages.get(0).getDate().toString());
+		double endPositionx = (double) dictDays.get(stages.get(stages.size()-1).getDate().toString());
 		
 		// Setting and Drawing the Duration Line
 		Line durationLine = new Line();
